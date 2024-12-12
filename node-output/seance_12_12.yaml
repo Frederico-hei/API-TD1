@@ -1,0 +1,443 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "Library Management API STD23032",
+    "description" : "API for managing courses and students in a library",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/HEIFREDERICO2/tdOas/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  } ],
+  "paths" : {
+    "/courses" : {
+      "get" : {
+        "summary" : "Retrieve a list of courses",
+        "parameters" : [ {
+          "name" : "courseName",
+          "in" : "query",
+          "description" : "Filter by the name of the course",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "anneeStart",
+          "in" : "query",
+          "description" : "Filter courses released after this date",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }, {
+          "name" : "anneeEnd",
+          "in" : "query",
+          "description" : "Filter courses released before this date",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of courses",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Course"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update a course (idempotent)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Course"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Course updated"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add a new course",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Course"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Course created"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete a course",
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "query",
+          "description" : "ID of the course to delete",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Course deleted"
+          }
+        }
+      }
+    },
+    "/students" : {
+      "get" : {
+        "summary" : "Retrieve a list of students",
+        "parameters" : [ {
+          "name" : "studentName",
+          "in" : "query",
+          "description" : "Filter by the name of the student",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of students",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Student"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update a student (idempotent)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Student"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Student updated"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Add a new student",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateStudent"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Student created"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete a student",
+        "parameters" : [ {
+          "name" : "studentId",
+          "in" : "query",
+          "description" : "ID of the student to delete",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Student deleted"
+          }
+        }
+      }
+    },
+    "/students/{studentId}/group" : {
+      "put" : {
+        "summary" : "Update the group of a student",
+        "parameters" : [ {
+          "name" : "studentId",
+          "in" : "path",
+          "description" : "ID of the student to update",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Group"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Student group updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Student"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/students/group" : {
+      "put" : {
+        "summary" : "Update the group of multiple students",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/students_group_body"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Students groups updated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Student"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/students/{studentId}/groups/{groupId}" : {
+      "put" : {
+        "summary" : "Associate a student with a group",
+        "parameters" : [ {
+          "name" : "studentId",
+          "in" : "path",
+          "description" : "ID of the student to associate",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "groupId",
+          "in" : "path",
+          "description" : "ID of the group to associate",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Student associated with group",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Student"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Course" : {
+        "title" : "Course",
+        "required" : [ "annee", "name", "nombreEtudiant", "promotion" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "description" : "Unique identifier for the course"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the course"
+          },
+          "annee" : {
+            "type" : "string",
+            "description" : "Year of the course"
+          },
+          "promotion" : {
+            "type" : "string",
+            "description" : "Promotion of the course",
+            "enum" : [ "G", "H", "J", "K" ]
+          },
+          "nombreEtudiant" : {
+            "type" : "integer",
+            "description" : "Number of students in the course"
+          }
+        }
+      },
+      "Student" : {
+        "title" : "Student",
+        "required" : [ "birthday", "groupe", "name", "reference", "sex" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "description" : "Unique identifier for the student"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the student"
+          },
+          "sex" : {
+            "type" : "string",
+            "description" : "Sex of the student (M or F)",
+            "enum" : [ "M", "F" ]
+          },
+          "birthday" : {
+            "type" : "string",
+            "description" : "Birthday of the student",
+            "format" : "date"
+          },
+          "reference" : {
+            "type" : "string",
+            "description" : "Reference of the student (STDXXXX)"
+          },
+          "groupe" : {
+            "type" : "string",
+            "description" : "Group of the student (J2)"
+          }
+        }
+      },
+      "Group" : {
+        "title" : "Group",
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "description" : "Unique identifier for the group"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Name of the group"
+          },
+          "students" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Student"
+            }
+          }
+        }
+      },
+      "CreateStudent" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/Student"
+        }, {
+          "required" : [ "group" ],
+          "type" : "object",
+          "properties" : {
+            "group" : {
+              "$ref" : "#/components/schemas/Group"
+            }
+          }
+        } ]
+      },
+      "CreateGroup" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/Group"
+        }, {
+          "required" : [ "students" ],
+          "type" : "object",
+          "properties" : {
+            "students" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Student"
+              }
+            }
+          }
+        } ]
+      },
+      "students_group_body" : {
+        "type" : "object",
+        "properties" : {
+          "studentId" : {
+            "type" : "integer"
+          },
+          "group" : {
+            "$ref" : "#/components/schemas/Group"
+          }
+        }
+      }
+    }
+  }
+}
