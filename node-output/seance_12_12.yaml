@@ -390,6 +390,16 @@
             "type" : "string",
             "description" : "Name of the group"
           },
+          "groupYear" : {
+            "type" : "integer"
+          },
+          "promotion" : {
+            "type" : "string",
+            "enum" : [ "G", "H", "J", "K" ]
+          },
+          "studentNB" : {
+            "type" : "integer"
+          },
           "students" : {
             "type" : "array",
             "items" : {
